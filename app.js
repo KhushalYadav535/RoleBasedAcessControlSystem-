@@ -19,6 +19,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 const MongoStore = connectMongo(session);
+
 // Init Session
 app.use(
   session({
@@ -80,7 +81,7 @@ app.use((error, req, res, next) => {
 // Setting the PORT
 const PORT = process.env.PORT || 3000;
 
-// Making a connection to MongoDB
+// MongoDB Connection and Error Handling
 mongoose
   .connect(process.env.MONGODB_URI, {
     dbName: process.env.DB_NAME,
@@ -94,30 +95,26 @@ mongoose
     // Listening for connections on the defined PORT
     app.listen(PORT, () => console.log(`🚀 @ http://localhost:${PORT}`));
   })
-  .catch((err) => console.log(err.message));
+  .catch((err) => {
+    console.error('Error connecting to MongoDB:', err.message);
+  });
 
-// function ensureAuthenticated(req, res, next) {
-//   if (req.isAuthenticated()) {
-//     next();
-//   } else {
-//     res.redirect('/auth/login');
-//   }
-// }
-
+// Function for Admin Role-based Authorization
 function ensureAdmin(req, res, next) {
-  if (req.user.role === roles.admin) {
+  if (req.user && req.user.role === roles.admin) {
     next();
   } else {
-    req.flash('warning', 'you are not Authorized to see this route');
+    req.flash('warning', 'You are not authorized to access this route');
     res.redirect('/');
   }
 }
 
+// Function for Moderator Role-based Authorization
 function ensureModerator(req, res, next) {
-  if (req.user.role === roles.moderator) {
+  if (req.user && req.user.role === roles.moderator) {
     next();
   } else {
-    req.flash('warning', 'you are not Authorized to see this route');
+    req.flash('warning', 'You are not authorized to access this route');
     res.redirect('/');
   }
 }
