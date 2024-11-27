@@ -20,7 +20,7 @@ The application is _almost_ **production ready**.
 Step 1: Clone the repo
 
 ```bash
-git clone https://github.com/trulymittal/role-based-access-control
+https://github.com/KhushalYadav535/RoleBasedAcessControlSystem-
 ```
 
 Step 2: cd into the cloned repo and run:
@@ -55,7 +55,7 @@ npm start
 
 ## Author
 
-- [**Truly Mittal**](https://trulymittal.com)
+- Khushal yadav
 
 ## Contribute
 
